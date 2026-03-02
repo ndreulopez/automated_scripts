@@ -21,7 +21,7 @@ FEEDS = {
     "El País": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
     "Financial Times": "https://www.ft.com/?format=rss",
     "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", 
-    "Reuters": "https://yahoo.com/news/rss/world" 
+    "Reuters/BBC": "http://feeds.bbci.co.uk/news/world/rss.xml"
 }
 
 # ==========================================
