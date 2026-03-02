@@ -2,12 +2,12 @@ import os
 import time
 import logging
 import feedparser
-import requests
 import smtplib
 import difflib
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import google.generativeai as genai
 
 # ==========================================
 # 1. CONFIGURATION & LOGGING
@@ -15,28 +15,24 @@ from email.mime.multipart import MIMEMultipart
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# RSS Feed URLs (Using public RSS feeds where APIs are unavailable/cost-prohibitive)
+# RSS Feed URLs
 FEEDS = {
     "La Vanguardia": "https://www.lavanguardia.com/rss/home.xml",
     "El País": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
     "Financial Times": "https://www.ft.com/?format=rss",
-    "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", # Note: Bloomberg/Reuters RSS availability fluctuates
-    "Reuters": "https://yahoo.com/news/rss/world" # Yahoo News acting as a reliable proxy for global news
+    "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", 
+    "Reuters": "https://yahoo.com/news/rss/world" 
 }
 
 # ==========================================
 # 2. HELPER FUNCTIONS
 # ==========================================
 def get_secret(key):
-    """Fetches secrets safely, prioritizing OS env vars (for GitHub Actions) then Colab."""
+    """Fetches secrets safely from OS env vars (for GitHub Actions)."""
     if os.getenv(key):
         return os.getenv(key)
-    try:
-        from google.colab import userdata
-        return userdata.get(key)
-    except ImportError:
-        logger.error(f"Secret {key} not found.")
-        return None
+    logger.error(f"Secret {key} not found.")
+    return None
 
 def is_similar(title1, title2, threshold=0.8):
     """Checks if two titles are highly similar to prevent duplicates."""
@@ -61,7 +57,6 @@ def fetch_news(limit_per_source=7):
                 
                 title = entry.get('title', 'No Title')
                 
-                # Deduplication check
                 if any(is_similar(title, seen) for seen in seen_titles):
                     continue
                 
@@ -69,7 +64,7 @@ def fetch_news(limit_per_source=7):
                 all_articles.append({
                     "source": source,
                     "title": title,
-                    "description": entry.get('summary', 'No description available.')[:200], # Truncate long summaries
+                    "description": entry.get('summary', 'No description available.')[:200],
                     "link": entry.get('link', ''),
                     "date": entry.get('published', datetime.now().strftime('%Y-%m-%d'))
                 })
@@ -81,16 +76,18 @@ def fetch_news(limit_per_source=7):
     return all_articles
 
 # ==========================================
-# 4. PERPLEXITY AI INTEGRATION
+# 4. GEMINI AI INTEGRATION
 # ==========================================
 def generate_executive_briefing(articles):
-    """Sends structured articles to Perplexity API to generate an HTML briefing."""
-    logger.info("Sending data to Perplexity API...")
-    api_key = get_secret("PERPLEXITY_API_KEY")
+    """Sends structured articles to Gemini API to generate an HTML briefing."""
+    logger.info("Sending data to Gemini API...")
+    api_key = get_secret("GEMINI_API_KEY")
     if not api_key:
-        raise ValueError("Missing Perplexity API Key.")
+        raise ValueError("Missing Gemini API Key.")
 
-    # Structure raw data for the prompt
+    # Configure the Gemini SDK
+    genai.configure(api_key=api_key)
+
     raw_text = "\n\n".join([f"Source: {a['source']}\nTitle: {a['title']}\nSummary: {a['description']}\nLink: {a['link']}" for a in articles])
 
     system_prompt = """You are a top-tier executive briefer. I will provide a list of the latest news articles. 
@@ -111,28 +108,22 @@ def generate_executive_briefing(articles):
     - Output ONLY valid HTML code. Do not wrap it in markdown code blocks like ```html.
     """
 
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-    
-    payload = {
-        "model": "sonar-pro", # Perplexity's advanced model
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": raw_text}
-        ],
-        "temperature": 0.2
-    }
-
     try:
-        response = requests.post("https://api.perplexity.ai/chat/completions", json=payload, headers=headers)
-        response.raise_for_status()
-        html_content = response.json()['choices'][0]['message']['content']
-        # Clean up markdown formatting if the LLM ignores instructions
+        # Using Gemini 3.0 Flash
+        model = genai.GenerativeModel(
+            model_name='gemini-3.0-flash',
+            system_instruction=system_prompt
+        )
+        response = model.generate_content(
+            raw_text,
+            generation_config=genai.types.GenerationConfig(temperature=0.2)
+        )
+        
+        html_content = response.text
+        # Clean up markdown formatting if the LLM adds it
         return html_content.replace("```html", "").replace("```", "").strip()
     except Exception as e:
-        logger.error(f"Perplexity API failed: {e}")
+        logger.error(f"Gemini API failed: {e}")
         return "<p>Error generating briefing. Please check logs.</p>"
 
 # ==========================================
@@ -155,7 +146,6 @@ def send_email(html_body):
     msg["From"] = sender
     msg["To"] = recipient
 
-    # Wrap the Perplexity HTML in a clean, professional email template
     full_html = f"""
     <html>
       <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: auto;">
@@ -167,7 +157,7 @@ def send_email(html_body):
             {html_body}
         </div>
         <div style="background-color: #f4f4f4; padding: 10px; text-align: center; font-size: 12px; color: #999;">
-            <p>Automated Briefing powered by Python & Perplexity AI.</p>
+            <p>Automated Briefing powered by Python & Gemini AI.</p>
         </div>
       </body>
     </html>
@@ -176,7 +166,6 @@ def send_email(html_body):
     msg.attach(MIMEText(full_html, "html"))
 
     try:
-        # Use port 465 for implicit SSL
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(sender, password)
             server.sendmail(sender, recipient, msg.as_string())
@@ -198,6 +187,5 @@ def job():
         logger.warning("No articles fetched. Skipping API and Email.")
     logger.info("--- Job Complete ---")
 
-# Run once immediately for testing
 if __name__ == "__main__":
     job()
