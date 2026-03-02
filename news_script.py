@@ -41,7 +41,7 @@ def is_similar(title1, title2, threshold=0.8):
 # ==========================================
 # 3. NEWS COLLECTION & DEDUPLICATION
 # ==========================================
-def fetch_news(limit_per_source=7):
+def fetch_news(limit_per_source=15):
     """Fetches, parses, and deduplicates news from predefined RSS feeds."""
     logger.info("Starting news collection...")
     all_articles = []
@@ -90,22 +90,26 @@ def generate_executive_briefing(articles):
 
     raw_text = "\n\n".join([f"Source: {a['source']}\nTitle: {a['title']}\nSummary: {a['description']}\nLink: {a['link']}" for a in articles])
 
-    system_prompt = """You are a top-tier executive briefer. I will provide a list of the latest news articles. 
-    Your task is to generate a concise, 5-10 minute executive briefing formatted in clean HTML.
+    system_prompt = """Ets un analista executiu de primer nivell. Et proporcionaré una llista amb les últimes notícies de diferents mitjans (en anglès i castellà). 
+    La teva tasca és analitzar-les, **seleccionar només les notícies més rellevants i de major impacte**, i generar un resum executiu concís en format HTML net.
     
-    Structure the HTML exactly with these sections (using <h2> and <h3> tags):
-    1. Spain & Catalonia Developments
-    2. Global Economics & Markets
-    3. Corporate & Geopolitics
+    IMPORTANT: Tota la teva resposta, incloent-hi els títols traduïts i l'anàlisi, HA D'ESTAR ÍNTEGRAMENT EN CATALÀ.
     
-    Rules for the briefing:
-    - Group the provided articles into the above categories.
-    - Highlight the most important developments.
-    - Add a brief analytical sentence on *why* the story matters.
-    - Identify any cross-source trends.
-    - Maintain a strictly neutral, objective, and analytical tone.
-    - Include the source name and a hyperlink to the article.
-    - Output ONLY valid HTML code. Do not wrap it in markdown code blocks like ```html.
+    Estructura l'HTML exactament amb aquestes seccions (fent servir etiquetes <h2> i <h3>):
+    1. Geopolítica
+    2. Notícies de Catalunya
+    3. Notícies d'Espanya
+    4. Macroeconomia
+    5. Economia de mercat
+    
+    Regles per al resum:
+    - Fes un sedàs de la llista proporcionada: descarta les notícies menors, redundants o poc rellevants. Queda't només amb el gra.
+    - Agrupa els articles seleccionats en les 5 categories esmentades. Si una categoria no té notícies rellevants, indica-ho breument (ex: "Sense novetats destacables avui.").
+    - Afegeix una breu frase analítica sobre *per què* és important aquesta notícia o quin impacte té.
+    - Identifica tendències comunes si diferents fonts parlen del mateix tema.
+    - Mantingues un to estrictament neutral, objectiu i analític.
+    - Inclou el nom de la font original i un hipervincle (enllaç) a l'article complet.
+    - Retorna NOMÉS codi HTML vàlid. No l'embolcallis en blocs de codi markdown com ```html.
     """
 
     try:
@@ -124,7 +128,7 @@ def generate_executive_briefing(articles):
         return html_content.replace("```html", "").replace("```", "").strip()
     except Exception as e:
         logger.error(f"Gemini API failed: {e}")
-        return "<p>Error generating briefing. Please check logs.</p>"
+        return "<p>Error generant el resum. Si us plau, revisa els logs.</p>"
 
 # ==========================================
 # 5. EMAIL DELIVERY
@@ -139,7 +143,7 @@ def send_email(html_body):
     if not all([sender, password, recipient]):
         raise ValueError("Missing email credentials.")
 
-    subject = f"Executive Briefing | {datetime.now().strftime('%b %d, %Y - %H:%M %Z')}"
+    subject = f"Resum Executiu | {datetime.now().strftime('%b %d, %Y - %H:%M %Z')}"
     
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
