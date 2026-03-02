@@ -1,0 +1,33 @@
+name: Twice Weekly News Briefing
+
+on:
+  schedule:
+    # Runs at 06:00 UTC (07:00 CET/08:00 CEST) on Mondays (1) and Thursdays (4)
+    - cron: '0 6 * * 1,4'
+  workflow_dispatch: # Allows you to run it manually from the GitHub Actions tab!
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run News Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: python news_script.py
