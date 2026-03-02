@@ -111,7 +111,7 @@ def generate_executive_briefing(articles):
     try:
         # Using Gemini 3.0 Flash
         model = genai.GenerativeModel(
-            model_name='gemini-3.0-flash',
+            model_name='emini-3-flash-preview',
             system_instruction=system_prompt
         )
         response = model.generate_content(
