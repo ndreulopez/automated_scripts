@@ -23,11 +23,11 @@ FEEDS = {
     "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", 
     "Reuters/BBC": "http://feeds.bbci.co.uk/news/world/rss.xml",
     "TechCrunch": "https://techcrunch.com/feed/",
-    "Xataka": "https://www.xataka.com/feed",
+    "WIRED": "https://es.wired.com/",
     "Agencia SINC": "https://www.agenciasinc.es/rss/feed/noticias",
     "Nature": "https://www.nature.com/nature.rss",
-    "Mundo Deportivo": "https://www.mundodeportivo.com/mvc/feed/rss/futbol/fc-barcelona",
-    "Cadena SER Deportes": "https://cadenaser.com/deportes/"
+    "Mundo Deportivo": "https://www.mundodeportivo.com/",
+    "El País Deportes": "https://elpais.com/deportes/"
 }
 
 # ==========================================
@@ -102,14 +102,14 @@ def generate_executive_briefing(articles):
     IMPORTANT: Tota la teva resposta, incloent-hi els títols traduïts i l'anàlisi, HA D'ESTAR ÍNTEGRAMENT EN CATALÀ.
     
     Estructura l'HTML exactament amb aquestes seccions (fent servir etiquetes <h2> i <h3>):
-    1. Geopolítica
-    2. Notícies de Catalunya
-    3. Notícies d'Espanya
-    4. Macroeconomia
-    5. Economia de mercat
-    6. Tecnologia
-    7. Ciència
-    8. FC Barcelona
+    Geopolítica
+    Notícies generals de Catalunya
+    Notícies generals d'Espanya
+    Macroeconomia
+    Economia de mercat
+    Tecnologia
+    Ciència
+    FC Barcelona i Esport
     
     Regles per al resum:
     - Fes un sedàs de la llista proporcionada: descarta les notícies menors, redundants o poc rellevants. Queda't només amb el gra.
