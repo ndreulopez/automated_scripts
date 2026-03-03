@@ -21,7 +21,13 @@ FEEDS = {
     "El País": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
     "Financial Times": "https://www.ft.com/?format=rss",
     "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", 
-    "Reuters/BBC": "http://feeds.bbci.co.uk/news/world/rss.xml"
+    "Reuters/BBC": "http://feeds.bbci.co.uk/news/world/rss.xml",
+    "TechCrunch": "https://techcrunch.com/feed/",
+    "Xataka": "https://www.xataka.com/feed",
+    "Agencia SINC": "https://www.agenciasinc.es/rss/feed/noticias",
+    "Nature": "https://www.nature.com/nature.rss",
+    "Mundo Deportivo": "https://www.mundodeportivo.com/mvc/feed/rss/futbol/fc-barcelona",
+    "Cadena SER Deportes": "https://cadenaser.com/deportes/"
 }
 
 # ==========================================
@@ -101,13 +107,16 @@ def generate_executive_briefing(articles):
     3. Notícies d'Espanya
     4. Macroeconomia
     5. Economia de mercat
+    6. Tecnologia
+    7. Ciència
+    8. FC Barcelona
     
     Regles per al resum:
     - Fes un sedàs de la llista proporcionada: descarta les notícies menors, redundants o poc rellevants. Queda't només amb el gra.
-    - Agrupa els articles seleccionats en les 5 categories esmentades. Si una categoria no té notícies rellevants, indica-ho breument (ex: "Sense novetats destacables avui.").
+    - Agrupa els articles seleccionats en les 8 categories esmentades. Si una categoria no té notícies rellevants, indica-ho breument (ex: "Sense novetats destacables avui.").
     - Afegeix una breu frase analítica sobre *per què* és important aquesta notícia o quin impacte té.
     - Identifica tendències comunes si diferents fonts parlen del mateix tema.
-    - Mantingues un to estrictament neutral, objectiu i analític.
+    - Mantingues un to estrictament neutral, objectiu i analític (fins i tot per a l'esport).
     - Inclou el nom de la font original i un hipervincle (enllaç) a l'article complet.
     - Retorna NOMÉS codi HTML vàlid. No l'embolcallis en blocs de codi markdown com ```html.
     """
