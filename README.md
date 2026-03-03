@@ -18,8 +18,7 @@ By leveraging Python, RSS feeds, and the Gemini AI API, the script pulls the lat
 
 * `news_script.py`: The core Python script that handles fetching, AI processing, and email delivery.
 * `.github/workflows/schedule.yml`: The GitHub Actions workflow file defining the execution schedule and environment.
-* 
-`requirements.txt`: The Python dependencies required for the script (`feedparser==6.0.11` and `google-generativeai==0.8.3`).
+* `requirements.txt`: The Python dependencies required for the script (`feedparser==6.0.11` and `google-generativeai==0.8.3`).
 
 
 
