@@ -26,8 +26,9 @@ FEEDS = {
     "WIRED": "https://es.wired.com/feed/rss", 
     "Agencia SINC": "https://www.agenciasinc.es/rss/feed/noticias",
     "Nature": "https://www.nature.com/nature.rss",
-    "Mundo Deportivo": "https://www.mundodeportivo.com/mvc/feed/rss/futbol/fc-barcelona", 
-    "El País Deportes": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/seccion/deportes/portada"
+    "La Vanguardia (Deportes)": "https://www.lavanguardia.com/rss/deportes.xml",
+    "Diari Ara (Esports)": "https://www.ara.cat/rss/esports/",
+    "Barça Blaugranes": "https://www.barcablaugranes.com/rss/current.xml"
 }
 
 # ==========================================
