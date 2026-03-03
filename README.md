@@ -1,6 +1,6 @@
 # Executive News Briefing Automation
 
-This repository contains an automated pipeline that curates, synthesizes, and delivers a twice-weekly executive news briefing directly to your inbox.
+This repository contains an automated pipeline that curates, synthesizes, and delivers a twice-daily executive news briefing directly to your inbox.
 
 By leveraging Python, RSS feeds, and the Gemini AI API, the script pulls the latest articles from top-tier publications, filters out duplicate stories, and uses an AI model to draft a clean, categorized HTML email summary. The entire process is automated using GitHub Actions.
 
