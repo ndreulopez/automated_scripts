@@ -23,11 +23,11 @@ FEEDS = {
     "Bloomberg": "https://feeds.bloomberg.com/markets/news.rss", 
     "Reuters/BBC": "http://feeds.bbci.co.uk/news/world/rss.xml",
     "TechCrunch": "https://techcrunch.com/feed/",
-    "WIRED": "https://es.wired.com/",
+    "WIRED": "https://es.wired.com/feed/rss", 
     "Agencia SINC": "https://www.agenciasinc.es/rss/feed/noticias",
     "Nature": "https://www.nature.com/nature.rss",
-    "Mundo Deportivo": "https://www.mundodeportivo.com/",
-    "El País Deportes": "https://elpais.com/deportes/"
+    "Mundo Deportivo": "https://www.mundodeportivo.com/mvc/feed/rss/futbol/fc-barcelona", 
+    "El País Deportes": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/seccion/deportes/portada"
 }
 
 # ==========================================
