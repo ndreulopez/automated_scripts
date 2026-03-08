@@ -103,7 +103,6 @@ def generate_executive_briefing(articles):
     IMPORTANT: Tota la teva resposta, incloent-hi els títols traduïts i l'anàlisi, HA D'ESTAR ÍNTEGRAMENT EN CATALÀ.
     
     Estructura l'HTML exactament amb aquestes seccions (fent servir etiquetes <h2> i <h3>):
-    Geopolítica
     Notícies generals de Catalunya
     Notícies generals d'Espanya
     Macroeconomia
@@ -111,6 +110,7 @@ def generate_executive_briefing(articles):
     Tecnologia
     Ciència
     FC Barcelona i Esport
+    Geopolítica
     
     Regles per al resum:
     - Fes un sedàs de la llista proporcionada: descarta les notícies menors, redundants o poc rellevants. Queda't només amb el gra.
