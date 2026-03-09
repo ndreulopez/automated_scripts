@@ -162,19 +162,30 @@ def send_email(html_body):
 
     full_html = f"""
     <html>
-      <body style="font-family: Georgia, 'Times New Roman', Times, serif; line-height: 1.8; color: #222222; max-width: 800px; margin: auto; background-color: #FAF9F6;">
-        <div style="padding: 30px 20px; text-align: center; border-bottom: 4px double #DAA520;">
-            <h1 style="margin: 0; font-size: 34px; font-weight: normal; letter-spacing: 1px; color: #111111; text-transform: uppercase;">Daily Executive Briefing</h1>
-            <div style="margin-top: 15px; border-top: 1px solid #DAA520; border-bottom: 1px solid #DAA520; padding: 5px 0;">
-                <p style="margin: 0; font-size: 13px; color: #444444; font-style: italic; text-transform: uppercase; letter-spacing: 2px;">{datetime.now().strftime('%A, %B %d, %Y')}</p>
+      <head>
+        <style>
+          /* Imports fallback fonts for email clients that support web fonts */
+          @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap');
+        </style>
+      </head>
+      <body style="font-family: 'Cheltenham', 'ITC Cheltenham', 'Lora', Georgia, serif; line-height: 1.6; color: #1a1a1a; max-width: 800px; margin: auto; background-color: #fdfbf7;">
+        
+        <div style="padding: 40px 20px 20px; text-align: center; border-bottom: 2px solid #b8974a;">
+            <h1 style="margin: 0; font-family: 'Chomsky', 'UnifrakturMaguntia', 'Old English Text MT', blackletter, serif; font-size: 48px; font-weight: normal; color: #111;">Daily Executive Briefing</h1>
+            
+            <div style="margin-top: 25px; border-top: 1px solid #b8974a; border-bottom: 1px solid #b8974a; padding: 6px 0;">
+                <p style="margin: 0; font-size: 12px; color: #333; text-transform: uppercase; letter-spacing: 1px; font-family: 'Helvetica Neue', Helvetica, sans-serif;">{datetime.now().strftime('%A, %B %d, %Y')}</p>
             </div>
         </div>
-        <div style="padding: 30px 20px;">
+        
+        <div style="padding: 30px 20px; font-size: 16px;">
             {html_body}
         </div>
-        <div style="padding: 15px; text-align: center; font-size: 12px; color: #666666; border-top: 1px solid #DAA520;">
+        
+        <div style="padding: 20px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #b8974a;">
             <p style="margin: 0; font-style: italic;">Automated Briefing powered by Python & Gemini AI.</p>
         </div>
+        
       </body>
     </html>
     """
