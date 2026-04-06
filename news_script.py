@@ -153,7 +153,8 @@ def send_email(html_body):
     if not all([sender, password, recipient]):
         raise ValueError("Missing email credentials.")
 
-    subject = f"Resum Executiu | {datetime.now().strftime('%b %d, %Y - %H:%M %Z')}"
+    adjusted_time = datetime.now() - timedelta(hours=2)
+    subject = f"Resum Executiu | {adjusted_time.strftime('%b %d, %Y - %H:%M %Z')}"
     
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
@@ -174,7 +175,7 @@ def send_email(html_body):
             <h1 style="margin: 0; font-family: 'Chomsky', 'UnifrakturMaguntia', 'Old English Text MT', blackletter, serif; font-size: 48px; font-weight: normal; color: #111;">Daily Executive Briefing</h1>
             
             <div style="margin-top: 25px; border-top: 1px solid #b8974a; border-bottom: 1px solid #b8974a; padding: 6px 0;">
-                <p style="margin: 0; font-size: 12px; color: #333; text-transform: uppercase; letter-spacing: 1px; font-family: 'Helvetica Neue', Helvetica, sans-serif;">{datetime.now().strftime('%A, %B %d, %Y')}</p>
+                <p style="margin: 0; font-size: 12px; color: #333; text-transform: uppercase; letter-spacing: 1px; font-family: 'Helvetica Neue', Helvetica, sans-serif;">{adjusted_time.strftime('%A, %B %d, %Y')}</p>
             </div>
         </div>
         
