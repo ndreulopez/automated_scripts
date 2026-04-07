@@ -4,7 +4,7 @@ import logging
 import feedparser
 import smtplib
 import difflib
-from datetime import datetime
+from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import google.generativeai as genai
