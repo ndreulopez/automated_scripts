@@ -153,7 +153,7 @@ def send_email(html_body):
     if not all([sender, password, recipient]):
         raise ValueError("Missing email credentials.")
 
-    adjusted_time = datetime.now() - timedelta(hours=2)
+    adjusted_time = datetime.now() + timedelta(hours=2)
     subject = f"Resum Executiu | {adjusted_time.strftime('%b %d, %Y - %H:%M %Z')}"
     
     msg = MIMEMultipart("alternative")
